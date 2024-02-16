@@ -13,8 +13,9 @@ Kommandoer til chatten
 2. "/ool" - Opretter en OOC, hvor kun folk tæt på dig kan se det.
 3. "/clear" - Rydder din chat.
 4. "/bars" - Opretter black bars, fx til content creators.
-5. Der er også kommandoer til næsten alle jobs, tror jeg.
-6. Webhook til alle kommandoer undtagen "/ool" og "/ooc".
+5. "/mobilepay" - Giver sig selv.
+6. Der er også kommandoer til næsten alle jobs, tror jeg.
+7. Webhook til alle kommandoer undtagen "/ool" og "/ooc".
 
 ## Twitter Funktioner
 
