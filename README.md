@@ -4,7 +4,7 @@ Commands til chatten
 
 ## Kommer
 
-1. Der kommer en "/ooc" command.
+1. Der kommer en "/ooc" command.(done)
 
 ## Andre Funktioner
 
