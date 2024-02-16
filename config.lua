@@ -51,6 +51,10 @@ config.jobscmd = {
     },
 }
 
+-- mobilepay --
+
+config.mobilepay = '' -- webhook
+
 -- ooc -- 
 
 config.useooc = false

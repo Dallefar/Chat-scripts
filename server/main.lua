@@ -8,6 +8,50 @@ vRPclient = Tunnel.getInterface("vRP","Dallefar")
 
 local cooldowns = {}  -- cooldown
 
+-- Mobile pay command -- 
+
+RegisterServerEvent('bank:transfer2')
+AddEventHandler('bank:transfer2', function(target_id, amountt) -- Pass the user ID as the first parameter
+    local user_id = vRP.getUserId({source})
+    print("User ID: ".. user_id)
+    local tsource = vRP.getUserSource({target_id})
+    if tsource ~= nil then
+        local balance = vRP.getBankMoney({user_id})
+        local target_balance = vRP.getBankMoney({target_id})
+
+        if tonumber(user_id) == tonumber(target_id) then
+            print(("User %s attempted to transfer money to themselves"):format(user_id))
+            TriggerClientEvent('chatMessage', source, "Du kan ikke selv overføre penge.")
+        else
+            if balance <= 0 or balance < tonumber(amountt) or tonumber(amountt) <= 0 then
+                print(("User %s does not have sufficient funds to transfer %s"):format(user_id, amountt))
+                TriggerClientEvent('chatMessage', source, "Du har ikke penge nok i banken.")
+            else
+                local user_bank = vRP.getBankMoney({user_id})
+                user_bank = user_bank - amountt
+                vRP.setBankMoney({user_id, user_bank})
+
+                local target_bank = vRP.getBankMoney({target_id})
+                target_bank = target_bank + amountt
+                vRP.setBankMoney({target_id, target_bank})
+
+                print(("User %s transferred %s to player ID %s"):format(user_id, amountt, target_id))
+                
+                -- Send a webhook notification
+                local payload = {
+                    content = string.format("**User %s transferred %s DKK to player ID %s**", user_id, amountt, target_id)
+                }
+                PerformHttpRequest(config.mobilepay, function(statusCode, response, headers) end, 'POST', json.encode(payload), { ['Content-Type'] = 'application/json' })
+            end
+        end
+    else
+        print(("Player ID %s is not connected"):format(target_id))
+        TriggerClientEvent('chatMessage', source, "Spilleren er ikke tilsluttet.")
+    end
+end)
+
+
+
 -- ooc -- 
 
 if config.useooc == true then

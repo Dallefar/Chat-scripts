@@ -21,6 +21,32 @@ AddEventHandler('esx_rpchat:sendProximityMessage', function(targetPlayerId, titl
     end
 end)
 
+-- Mobilepay -- 
+
+-- Mobile pay command -- 
+
+TriggerEvent('chat:addSuggestion', '/mobilepay', '/mobilepay [Id] [Beløb]')
+
+RegisterCommand('mobilepay', function(source, args)
+    local targetid = tonumber(args[1]) 
+    local moneyamount = tonumber(args[2]) 
+
+    if targetid and moneyamount then
+        TriggerEvent('mobilepay:command', targetid, moneyamount)
+    else
+        TriggerClientEvent('chatMessage', source, "^1Usage: /mobilepay [player-id] [amount]") 
+    end
+end, false)
+
+RegisterNetEvent('mobilepay:command')
+AddEventHandler('mobilepay:command', function(targetid, moneyamount)
+    local source = PlayerId() 
+    print(("Mobile payment of %s to player ID %s"):format(moneyamount, targetid))
+
+    TriggerServerEvent('bank:transfer2', targetid, moneyamount) -
+end)
+
+
 
 
 -- Bars -- 
