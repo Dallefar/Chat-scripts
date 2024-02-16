@@ -85,39 +85,48 @@ AddEventHandler('chatMessage', function(source, name, message)
             if identity then
                 local playerName = identity.firstname .. " " .. identity.name
 
-                local currentTime = os.time() - 3 -- 3 sek
+                if playerName ~= "Skift Dit Navn" then
+                    local currentTime = os.time() - 3 -- 3 sek
 
-                if cooldowns[user_id] == nil or currentTime - cooldowns[user_id] >= 3 then
-                    if #message > string.len(splitmessage[1]) + 1 then
-                        cooldowns[user_id] = currentTime
+                    if cooldowns[user_id] == nil or currentTime - cooldowns[user_id] >= 3 then
+                        if #message > string.len(splitmessage[1]) + 1 then
+                            cooldowns[user_id] = currentTime
 
-                        TriggerClientEvent('chat:addMessage', -1, {
-                            template = '<div style="display: inline-block; padding: 0.5vw; margin: 0.5vw; background-color: rgba(0, 153, 204); border-radius: 3px;"><strong>Twitter fra ' .. playerName .. '</strong><br>' .. string.sub(message, string.len(splitmessage[1]) + 1) .. '<br></div>',
-                            args = {}
-                        })
+                            TriggerClientEvent('chat:addMessage', -1, {
+                                template = '<div style="display: inline-block; padding: 0.5vw; margin: 0.5vw; background-color: rgba(0, 153, 204); border-radius: 3px;"><strong>Twitter fra ' .. playerName .. '</strong><br>' .. string.sub(message, string.len(splitmessage[1]) + 1) .. '<br></div>',
+                                args = {}
+                            })
 
-                        local payload = {
-                            embeds = {{
-                                title = "Twitter Logs",
-                                description = string.format("**ID:%s**  \n\n**Skrev en besked i Twitter:**%s", user_id, string.sub(message, string.len(splitmessage[1]) + 1)),
-                                color = 1752220,
-                            }}
-                        }
+                            local payload = {
+                                embeds = {{
+                                    title = "Twitter Logs",
+                                    description = string.format("**ID:%s**  \n\n**Skrev en besked i Twitter:**%s", user_id, string.sub(message, string.len(splitmessage[1]) + 1)),
+                                    color = 1752220,
+                                }}
+                            }
 
-                        PerformHttpRequest(config.Twitter, function(err, text, headers) end, 'POST', json.encode(payload), { ['Content-Type'] = 'application/json' })
+                            PerformHttpRequest(config.Twitter, function(err, text, headers) end, 'POST', json.encode(payload), { ['Content-Type'] = 'application/json' })
+                        else
+                            TriggerClientEvent("pNotify:SendNotification", source,{
+                                title = "Twitter",
+                                text = 'Du kan ikke sende en tom besked',
+                                type = "error",
+                                position = "top-right"
+                            })
+                        end
                     else
                         TriggerClientEvent("pNotify:SendNotification", source,{
                             title = "Twitter",
-                            text = 'Du kan ikke sende en tom besked',
-                            type = "error",
+                            text = 'Du skal vente med at sende en besked mere',
+                            type = "info",
                             position = "top-right"
                         })
                     end
                 else
                     TriggerClientEvent("pNotify:SendNotification", source,{
                         title = "Twitter",
-                        text = 'Du skal vente med at sende en besked mere',
-                        type = "info",
+                        text = 'Du skal skift navn få at bruge twitter',
+                        type = "error",
                         position = "top-right"
                     })
                 end
