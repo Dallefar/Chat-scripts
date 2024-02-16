@@ -6,14 +6,14 @@ config.useooc = false -- Jeg har lavet dette fordi på vrp server er der alleere
 
 -- Webhooks -- 
 
-config.Twitter = "https://discord.com/api/webhooks/1200471967359303872/Hx-4FyaYC0c0w-q4WNXA9HhFlSSDALq72bhl_BAaG1pCUo1VA7rVHbQeo6qto0i5pgBs"
+config.Twitter = ''
 
-config.Politi = "https://discord.com/api/webhooks/1200471967359303872/Hx-4FyaYC0c0w-q4WNXA9HhFlSSDALq72bhl_BAaG1pCUo1VA7rVHbQeo6qto0i5pgBs"
+config.Politi = ''
 
-config.Ems = ""
+config.Ems = ''
 
-config.Staff = "https://discord.com/api/webhooks/1200471967359303872/Hx-4FyaYC0c0w-q4WNXA9HhFlSSDALq72bhl_BAaG1pCUo1VA7rVHbQeo6qto0i5pgBs"
+config.Staff = ''
 
-config.Bilforhandler = ""
+config.Bilforhandler = ''
 
-config.Mekaniker = ""
+config.Mekaniker = ''
