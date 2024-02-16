@@ -99,7 +99,7 @@ AddEventHandler('chatMessage', function(source, name, message)
 end, false)
 
 
---[[ -- Job bedskeder -- 
+-- Job bedskeder -- 
 
 AddEventHandler('chatMessage', function(source, name, message)
         splitmessage = stringsplit(message, " ");
@@ -318,7 +318,7 @@ end, false)
             --TriggerClientEvent('mythic_notify:client:SendAlert', source, { type = 'error', text = 'Du er ikke Mekaniker', length = 2500})
             end
         end
-        end, false) ]]
+        end, false)
 
 -- Test navne scirpt -- 
 
