@@ -8,38 +8,59 @@ vRPclient = Tunnel.getInterface("vRP","Dallefar")
 
 local cooldowns = {}  -- cooldown
 
+-- ooc -- 
+
+
+if config.useooc then
+AddEventHandler('chatMessage', function(source, name, message)
+    local splitmessage = stringsplit(message, " ")
+
+    if string.lower(splitmessage[1]) == "/ooc" then
+        table.remove(splitmessage, 1)
+
+        local fullMessage = table.concat(splitmessage, " ")
+
+        local steamName = GetPlayerName(source)
+
+        local players = GetPlayers()
+
+        for _, player in ipairs(players) do
+            local targetSource = tonumber(player)
+
+            TriggerClientEvent('chat:addMessage', targetSource, {
+                template = '<div style="display: inline-block; padding: 0.5vw; margin: 0.5vw; background-color: rgba(39, 34, 37, 0.8); border-radius: 3px;"><strong>OOC fra ' .. steamName .. '</strong><br>' .. fullMessage .. '<br></div>',
+                args = {}
+            })
+        end
+
+        CancelEvent()
+    end
+end)
+end
+
 -- ool -- 
 
 AddEventHandler('chatMessage', function(source, name, message)
     local splitmessage = stringsplit(message, " ")
 
     if string.lower(splitmessage[1]) == "/ool" then
-        -- Remove the command from the message
         table.remove(splitmessage, 1)
 
-        -- Concatenate the message parts into a single string
         local fullMessage = table.concat(splitmessage, " ")
 
-        -- Get the player's Steam name
         local steamName = GetPlayerName(source)
 
-        -- Get all online players
         local players = GetPlayers()
 
-        -- Loop through players to check their distance
         for _, player in ipairs(players) do
             local targetSource = tonumber(player)
             local targetCoords = GetEntityCoords(GetPlayerPed(targetSource))
 
-            -- Calculate distance between players
             local distance = #(GetEntityCoords(GetPlayerPed(source)) - targetCoords)
 
-            -- Set the proximity range, adjust as needed
             local proximityRange = 20.0
 
-            -- Check if the player is within the proximity range
             if distance <= proximityRange then
-                -- Send the message only to players within proximity
                 TriggerClientEvent('chat:addMessage', targetSource, {
                     template = '<div style="display: inline-block; padding: 0.5vw; margin: 0.5vw; background-color: rgba(39, 34, 37, 0.8); border-radius: 3px;"><strong>OOC fra ' .. steamName .. '</strong><br>' .. fullMessage .. '<br></div>',
                     args = {}
@@ -47,7 +68,6 @@ AddEventHandler('chatMessage', function(source, name, message)
             end
         end
 
-        -- Cancel the chat event to prevent the message from being sent twice
         CancelEvent()
     end
 end)
