@@ -59,10 +59,11 @@ AddEventHandler('chatMessage', function(source, name, message)
             local distance = #(GetEntityCoords(GetPlayerPed(source)) - targetCoords)
 
             local proximityRange = 20.0
+            local userid = vRP.getUserId({source})
 
             if distance <= proximityRange then
                 TriggerClientEvent('chat:addMessage', targetSource, {
-                    template = '<div style="display: inline-block; padding: 0.5vw; margin: 0.5vw; background-color: rgba(39, 34, 37, 0.8); border-radius: 3px;"><strong>OOC fra ' .. steamName .. '</strong><br>' .. fullMessage .. '<br></div>',
+                    template = '<div style="display: inline-block; padding: 0.5vw; margin: 0.5vw; background-color: rgba(39, 34, 37, 0.8); border-radius: 3px;"><strong>OOC fra ' .. steamName .. ' | '.. userid ..'</strong><br>' .. fullMessage .. '<br></div>',
                     args = {}
                 })
             end
