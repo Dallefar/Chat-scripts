@@ -5,7 +5,7 @@ Kommandoer til chatten
 ## Kommer
 
 1. Showcase magter ikke lige.
-2. Måske en mulighed for at lave jobkommandoer/meddelelser i config.
+2. Måske en mulighed for at lave jobkommandoer/meddelelser i config(Done).
 
 ## Funktioner
 
