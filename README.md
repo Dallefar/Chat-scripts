@@ -6,6 +6,7 @@ Kommandoer til chatten
 
 1. Showcase magter ikke lige.
 2. Måske en mulighed for at lave jobkommandoer/meddelelser i config(Done).
+3. anonym twitter command
 
 ## Funktioner
 
