@@ -88,33 +88,24 @@ AddEventHandler('chatMessage', function(source, name, message)
     local splitmessage = stringsplit(message, " ")
 
     if string.lower(splitmessage[1]) == "/ool" then
-        -- Remove the command from the message
         table.remove(splitmessage, 1)
 
-        -- Concatenate the message parts into a single string
         local fullMessage = table.concat(splitmessage, " ")
 
-        -- Get the player's Steam name
         local steamName = GetPlayerName(source)
 
-        -- Get all online players
         local players = GetPlayers()
 
-        -- Loop through players to check their distance
         for _, player in ipairs(players) do
             local targetSource = tonumber(player)
             local targetCoords = GetEntityCoords(GetPlayerPed(targetSource))
 
-            -- Calculate distance between players
             local distance = #(GetEntityCoords(GetPlayerPed(source)) - targetCoords)
 
-            -- Set the proximity range, adjust as needed
-            local proximityRange = 20.0
+            local proximityRange = config.oolrange
             local userid = vRP.getUserId({source})
 
-            -- Check if the player is within the proximity range
             if distance <= proximityRange then
-                -- Send the message only to players within proximity
                 TriggerClientEvent('chat:addMessage', targetSource, {
                     template = '<div style="display: inline-block; padding: 0.5vw; margin: 0.5vw; background-color: rgba(39, 34, 37, 0.8); border-radius: 3px;"><strong>OOC fra ' .. steamName .. ' | '.. userid ..'</strong><br>' .. fullMessage .. '<br></div>',
                     args = {}
@@ -122,12 +113,73 @@ AddEventHandler('chatMessage', function(source, name, message)
             end
         end
 
-        -- Cancel the chat event to prevent the message from being sent twice
         CancelEvent()
     end
 end)
 
 -- Twitter -- 
+
+AddEventHandler('chatMessage', function(source, name, message)
+    local splitmessage = stringsplit(message, " ");
+
+    if string.lower(splitmessage[1]) == "/anoytwt" then
+        local user_id = vRP.getUserId({source})
+        CancelEvent()
+
+        vRP.getUserIdentity({user_id, function(identity)
+            if identity then
+                local playerName = identity.firstname .. " " .. identity.name
+
+                if playerName ~= "Skift Dit Navn" then
+                    local currentTime = os.time() - 3 -- 3 sek
+
+                    if cooldowns[user_id] == nil or currentTime - cooldowns[user_id] >= 3 then
+                        if #message > string.len(splitmessage[1]) + 1 then
+                            cooldowns[user_id] = currentTime
+
+                            TriggerClientEvent('chat:addMessage', -1, {
+                                template = '<div style="display: inline-block; padding: 0.5vw; margin: 0.5vw; background-color: rgba(0, 153, 204); border-radius: 3px;"><strong>Twitter fra Anonym''</strong><br>' .. string.sub(message, string.len(splitmessage[1]) + 1) .. '<br></div>',
+                                args = {}
+                            })
+
+                            local payload = {
+                                embeds = {{
+                                    title = "Twitter Logs",
+                                    description = string.format("**ID:%s**  \n\n**Skrev en besked i Twitter:**%s", user_id, string.sub(message, string.len(splitmessage[1]) + 1)),
+                                    color = 1752220,
+                                }}
+                            }
+
+                            PerformHttpRequest(config.Twitter, function(err, text, headers) end, 'POST', json.encode(payload), { ['Content-Type'] = 'application/json' })
+                        else
+                            TriggerClientEvent("pNotify:SendNotification", source,{
+                                title = "Twitter",
+                                text = 'Du kan ikke sende en tom besked',
+                                type = "error",
+                                position = "top-right"
+                            })
+                        end
+                    else
+                        TriggerClientEvent("pNotify:SendNotification", source,{
+                            title = "Twitter",
+                            text = 'Du skal vente med at sende en besked mere',
+                            type = "info",
+                            position = "top-right"
+                        })
+                    end
+                else
+                    TriggerClientEvent("pNotify:SendNotification", source,{
+                        title = "Twitter",
+                        text = 'Du skal skift navn få at bruge twitter',
+                        type = "error",
+                        position = "top-right"
+                    })
+                end
+            end
+        end})
+    end
+end, false)
+
 
 AddEventHandler('chatMessage', function(source, name, message)
     local splitmessage = stringsplit(message, " ");

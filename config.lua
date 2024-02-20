@@ -60,6 +60,10 @@ config.mobilepay = '' -- webhook
 config.useooc = false
 
 
+-- ool -- 
+
+config.oolrange = 20.0
+
 -- Webhooks -- 
 
 config.Twitter = ""
