@@ -128,9 +128,8 @@ AddEventHandler('chatMessage', function(source, name, message)
 
         vRP.getUserIdentity({user_id, function(identity)
             if identity then
-                local playerName = identity.firstname .. " " .. identity.name
+               -- local playerName = identity.firstname .. " " .. identity.name
 
-                if playerName ~= "Skift Dit Navn" then
                     local currentTime = os.time() - 3 -- 3 sek
 
                     if cooldowns[user_id] == nil or currentTime - cooldowns[user_id] >= 3 then
@@ -167,14 +166,6 @@ AddEventHandler('chatMessage', function(source, name, message)
                             position = "top-right"
                         })
                     end
-                else
-                    TriggerClientEvent("pNotify:SendNotification", source,{
-                        title = "Twitter",
-                        text = 'Du skal skift navn få at bruge twitter',
-                        type = "error",
-                        position = "top-right"
-                    })
-                end
             end
         end})
     end
